@@ -1,7 +1,7 @@
 {
   "name": "@brad-jones/deno-config",
   "exports": "./src/mod.ts",
-  "version": "0.5.0",
+  "version": "0.0.0",
   "license": "MIT",
   "publish": {
     "include": [

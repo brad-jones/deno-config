@@ -1,0 +1,53 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  release:
+    name: 📃 Release Please
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    outputs:
+      pr: ${{ steps.release.outputs.pr }}
+      prs_created: ${{ steps.release.outputs.prs_created }}
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
+    steps:
+      - id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          release-type: simple
+          token: ${{ secrets.PAT }}
+
+  package:
+    needs: release
+    name: 🏗️ Build & Package Additional Artifacts
+    if: ${{ needs.release.outputs.prs_created && needs.release.outputs.pr != '' }}
+    uses: ./.github/workflows/package.yaml
+    secrets: inherit
+    permissions:
+      contents: write
+      pull-requests: write
+    with:
+      next-release-pull-request: ${{ needs.release.outputs.pr }}
+
+  publish:
+    needs: release
+    name: 🚀 Publish Release
+    if: ${{ needs.release.outputs.release_created }}
+    uses: ./.github/workflows/publish.yaml
+    secrets: inherit
+    permissions:
+      id-token: write
+      contents: write
+      packages: write
+      attestations: write
+    with:
+      release-version: ${{ needs.release.outputs.version }}
+      release-tag: ${{ needs.release.outputs.tag_name }}
