@@ -18,6 +18,8 @@ jobs:
       pull-requests: write
     steps:
       - uses: googleapis/release-please-action@v4
+        with:
+          release-type: simple
 
       #- name: ⬇️ Git Checkout
       #  uses: actions/checkout@v5
