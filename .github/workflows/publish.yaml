@@ -22,7 +22,7 @@ jobs:
           release-type: simple
 
       # dummy change 1
-      # dummy change 2
+      # dummy change 3
 
       #- name: ⬇️ Git Checkout
       #  uses: actions/checkout@v5
