@@ -11,6 +11,12 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
+    outputs:
+      pr: ${{ steps.release.outputs.pr }}
+      prs_created: ${{ steps.release.outputs.prs_created }}
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
     steps:
       - id: release
         name: 📃 Release Please
@@ -18,17 +24,21 @@ jobs:
         with:
           release-type: simple
 
-      - if: ${{ steps.release.outputs.prs_created }}
-        name: 🏗️ Build & Package Additional Artifacts
-        uses: ./.github/workflows/package.yaml
-        secrets: inherit
-        with:
-          next-release-pull-request: ${{ steps.release.outputs.pr }}
+  package:
+    needs: release
+    name: 🏗️ Build & Package Additional Artifacts
+    if: ${{ needs.release.outputs.prs_created }}
+    uses: ./.github/workflows/package.yaml
+    secrets: inherit
+    with:
+      next-release-pull-request: ${{ needs.release.outputs.pr }}
 
-      - if: ${{ steps.release.outputs.release_created }}
-        name: 🚀 Publish Release
-        uses: ./.github/workflows/publish.yaml
-        secrets: inherit
-        with:
-          release-version: ${{ steps.release.outputs.version }}
-          release-tag: ${{ steps.release.outputs.tag_name }}
+  publish:
+    needs: release
+    name: 🚀 Publish Release
+    if: ${{ needs.release.outputs.release_created }}
+    uses: ./.github/workflows/publish.yaml
+    secrets: inherit
+    with:
+      release-version: ${{ needs.release.outputs.version }}
+      release-tag: ${{ needs.release.outputs.tag_name }}
