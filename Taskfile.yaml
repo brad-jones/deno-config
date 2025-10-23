@@ -37,7 +37,7 @@ tasks:
           echo '
             const config = JSON.parse(Deno.readTextFileSync("deno.json"));
             config.version = "{{.RELEASE_VERSION}}";
-            Deno.writeTextFileSync("deno.json", JSON.stringify(config, null, 2));
+            Deno.writeTextFileSync("deno.json", JSON.stringify(config, null, 2) + "\n");
           ' | deno run -A -
 
   publish:
