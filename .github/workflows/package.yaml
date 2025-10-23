@@ -4,12 +4,6 @@ on:
       next-release-pull-request:
         type: string
         required: true
-      release-version:
-        type: string
-        required: true
-      release-tag:
-        type: string
-        required: true
 
 env:
   CI: true

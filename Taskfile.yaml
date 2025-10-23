@@ -29,10 +29,9 @@ tasks:
       - "deno test -A ./tests/**/*.test.ts"
 
   package:
-    requires:
-      vars:
-        - RELEASE_VERSION
-        - RELEASE_TAG
+    vars:
+      RELEASE_VERSION:
+        sh: get-last-version-from-changelog.ts
     cmds:
       - >-
           echo '

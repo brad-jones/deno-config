@@ -35,8 +35,6 @@ jobs:
       pull-requests: write
     with:
       next-release-pull-request: ${{ needs.release.outputs.pr }}
-      release-version: ${{ needs.release.outputs.version }}
-      release-tag: ${{ needs.release.outputs.tag_name }}
 
   publish:
     needs: release
