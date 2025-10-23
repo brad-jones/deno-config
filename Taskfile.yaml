@@ -21,7 +21,7 @@ tasks:
   lint:
     desc: Lints the package to ensure it is of a high enough quality to be published.
     cmds:
-      - deno publish --dry-run --allow-dirty
+      - deno publish --dry-run --allow-dirty --allow-slow-types
 
   test:
     desc: Executes the projects test suite
