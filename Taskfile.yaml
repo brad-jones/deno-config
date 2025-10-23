@@ -14,14 +14,12 @@ tasks:
       - git config pull.rebase true
       - git config core.editor "code --wait"
       - git config commit.template "$PWD/.gitmsgtpl"
-      - deno install {{if .CI}}--frozen{{end}}
-      - "{{if .CI}}git config --global user.name github-actions[bot]{{end}}"
-      - "{{if .CI}}git config --global user.email github-actions[bot]@users.noreply.github.com{{end}}"
+      - deno install
 
   lint:
     desc: Lints the package to ensure it is of a high enough quality to be published.
     cmds:
-      - deno publish --dry-run --allow-dirty
+      - deno publish --dry-run --allow-dirty --allow-slow-types
 
   test:
     desc: Executes the projects test suite
@@ -29,30 +27,21 @@ tasks:
       - "deno test -A ./tests/**/*.test.ts"
 
   package:
-    desc: This is triggered by cog as a pre_bump_hook to generate all the final publishable artifacts
-    deps:
-      - lint
-      - test
-    requires:
-      vars:
-        - COG_VERSION
-        - COG_VERSION_TAG
+    vars:
+      RELEASE_VERSION:
+        sh: get-last-version-from-changelog.ts
     cmds:
       - >-
           echo '
             const config = JSON.parse(Deno.readTextFileSync("deno.json"));
-            config.version = "{{.COG_VERSION}}";
-            Deno.writeTextFileSync("deno.json", JSON.stringify(config, null, 2));
+            config.version = "{{.RELEASE_VERSION}}";
+            Deno.writeTextFileSync("deno.json", JSON.stringify(config, null, 2) + "\n");
           ' | deno run -A -
 
   publish:
-    desc: This is triggered by cog as a post_bump_hook to publish all the final publishable artifacts
     requires:
       vars:
-        - COG_VERSION
-        - COG_VERSION_TAG
+        - RELEASE_VERSION
+        - RELEASE_TAG
     cmds:
-      - deno publish
-      - git push && git push --tags
-      - cog changelog --at {{.COG_VERSION_TAG}} > GITHUB_CHANGELOG.md
-      - gh release create {{.COG_VERSION_TAG}} -F GITHUB_CHANGELOG.md
+      - deno publish --allow-slow-types

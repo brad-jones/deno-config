@@ -13,7 +13,7 @@ const cachedConfigLookups: Record<string, string> = {};
  * in the deno-net-container IoC container. It ensures type safety when working
  * with the factory in a DI context.
  */
-export const IDenoConfigFactory = new Type<IDenoConfigFactory>("IDenoConfigFactory");
+export const IDenoConfigFactory: Type<IDenoConfigFactory> = new Type<IDenoConfigFactory>("IDenoConfigFactory");
 
 /**
  * Factory function type for creating IDenoConfig instances.
