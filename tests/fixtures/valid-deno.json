@@ -1,0 +1,66 @@
+{
+  "name": "test-project",
+  "version": "1.0.0",
+  "exports": {
+    ".": "./mod.ts",
+    "./utils": "./utils.ts"
+  },
+  "compilerOptions": {
+    "allowJs": true,
+    "strict": true,
+    "lib": ["dom", "es2022"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "react",
+    "target": "es2022"
+  },
+  "lint": {
+    "include": ["src/", "tests/"],
+    "exclude": ["build/"],
+    "rules": {
+      "tags": ["recommended"],
+      "exclude": ["no-unused-vars"]
+    },
+    "report": "pretty"
+  },
+  "fmt": {
+    "useTabs": false,
+    "lineWidth": 100,
+    "indentWidth": 2,
+    "singleQuote": true,
+    "proseWrap": "preserve",
+    "semiColons": false
+  },
+  "tasks": {
+    "dev": "deno run --watch main.ts",
+    "test": "deno test",
+    "lint": "deno lint"
+  },
+  "test": {
+    "include": ["tests/"],
+    "exclude": ["tests/fixtures/"]
+  },
+  "bench": {
+    "include": ["benches/"]
+  },
+  "importMap": "./import_map.json",
+  "imports": {
+    "@std/path": "jsr:@std/path@^1.1.2",
+    "react": "npm:react@^18.0.0"
+  },
+  "scopes": {
+    "./src/": {
+      "utils": "./src/utils.ts"
+    }
+  },
+  "nodeModulesDir": true,
+  "vendor": false,
+  "lock": "./deno.lock",
+  "workspace": {
+    "members": ["./packages/*"]
+  },
+  "publish": {
+    "include": ["src/", "README.md"],
+    "exclude": ["tests/"]
+  },
+  "unstable": ["kv", "temporal"]
+}

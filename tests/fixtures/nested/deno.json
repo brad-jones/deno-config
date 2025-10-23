@@ -1,0 +1,11 @@
+{
+  "name": "nested-project",
+  "compilerOptions": {
+    "allowJs": false,
+    "strict": false,
+    "target": "es2020"
+  },
+  "tasks": {
+    "build": "deno run build.ts"
+  }
+}

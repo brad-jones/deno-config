@@ -1,0 +1,19 @@
+{
+  "name": "@brad-jones/deno-config",
+  "exports": "./src/mod.ts",
+  "version": "0.5.0",
+  "license": "MIT",
+  "publish": {
+    "include": [
+      "src/**/*.ts",
+      "README.md",
+      "CHANGELOG.md"
+    ]
+  },
+  "imports": {
+    "@brad-jones/deno-net-container": "jsr:@brad-jones/deno-net-container@^0.4.0",
+    "@std/path": "jsr:@std/path@^1.1.2",
+    "@zod/zod": "jsr:@zod/zod@^4.1.12",
+    "@std/expect": "jsr:@std/expect@^1.0.0"
+  }
+}
