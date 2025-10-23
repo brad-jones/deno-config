@@ -21,6 +21,8 @@ jobs:
         with:
           release-type: simple
 
+      # dummy change 1
+
       #- name: ⬇️ Git Checkout
       #  uses: actions/checkout@v5
       #  with:
