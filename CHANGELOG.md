@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.0.1](https://github.com/brad-jones/deno-config/compare/v1.0.0...v1.0.1) (2025-10-23)
+
+
+### Bug Fixes
+
+* ensure deno config file gets a newline ([0d65ab4](https://github.com/brad-jones/deno-config/commit/0d65ab4b03f350fd3775ef0eeab0b1cf7eaadc3e))
+* ensure gha has a git user ([c416e6b](https://github.com/brad-jones/deno-config/commit/c416e6b3a2f89d417a29d1e145e46213751caa56))
+* extract version from changelog ([55c239c](https://github.com/brad-jones/deno-config/commit/55c239ca015a43916699fe4b2db1e46c03cc38fe))
+* lets see if the package task works ([6ba8784](https://github.com/brad-jones/deno-config/commit/6ba8784aeabd3a94215f4a916ba801f11b06700e))
+* more ci tweaks ([fce65c2](https://github.com/brad-jones/deno-config/commit/fce65c201c149c9f4f37a1bb00fa9a66600fa1c5))
+* pass permissions to child workflows ([3564c4b](https://github.com/brad-jones/deno-config/commit/3564c4b8fef97a6dcfc90ee9240f541bd243cb82))
+* **the-do-dad:** do-dad was very broken ([73e43d0](https://github.com/brad-jones/deno-config/commit/73e43d03605cb4ccf12e583d66a31de0cc380f46))
+* use pat so that the test workflow runs ([6d655a4](https://github.com/brad-jones/deno-config/commit/6d655a4dec7434df09528807986dba828a3b96ec))
+* working on new release please pipeline ([f6c6003](https://github.com/brad-jones/deno-config/commit/f6c6003789b9dd37fd6d895ae7ccde74f0767d25))
+
 ## 1.0.0 (2025-10-23)
 
 
