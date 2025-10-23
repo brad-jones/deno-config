@@ -1,8 +1,12 @@
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - master
+  workflow_call:
+    inputs:
+      release-version:
+        type: string
+        required: true
+      release-tag:
+        type: string
+        required: true
 
 env:
   CI: true
@@ -15,25 +19,18 @@ jobs:
       contents: write
       packages: write
       attestations: write
-      pull-requests: write
     steps:
-      - uses: googleapis/release-please-action@v4
+      - name: ⬇️ Git Checkout
+        uses: actions/checkout@v5
 
-      #- name: ⬇️ Git Checkout
-      #  uses: actions/checkout@v5
-      #  with:
-      #    fetch-depth: 0
-      #
-      #- name: ⚙️ Install pixi env
-      #  uses: prefix-dev/setup-pixi@v0.9.1
-      #  with:
-      #    pixi-version: v0.58.0
-      #    activate-environment: true
-      #
-      #- name: Additional Environment Initialization
-      #  run: task init
-      #
-      #- name: 🚀 Publish
-      #  run: cog bump --auto
-      #  env:
-      #    GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: ⚙️ Install pixi env
+        uses: prefix-dev/setup-pixi@v0.9.1
+        with:
+          pixi-version: v0.58.0
+          activate-environment: true
+
+      - name: 🚀 Publish release
+        run: task publish
+        env:
+          RELEASE_VERSION: ${{ inputs.release-version }}
+          RELEASE_TAG: ${{ inputs.release-tag }}

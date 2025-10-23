@@ -1,0 +1,29 @@
+on: pull_request
+
+env:
+  CI: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Git Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Install pixi env
+        uses: prefix-dev/setup-pixi@v0.9.1
+        with:
+          pixi-version: v0.58.0
+          activate-environment: true
+
+      - name: ⚙️ Install deno deps
+        run: deno install --frozen
+
+      - name: 👮 Check code quality
+        run: task lint
+        continue-on-error: true
+
+      - name: 🧪 Run tests
+        run: task test
