@@ -1,8 +1,12 @@
 on:
-  workflow_dispatch:
-  push:
-    branches:
-      - master
+  workflow_call:
+    inputs:
+      release-version:
+        type: string
+        required: true
+      release-tag:
+        type: string
+        required: true
 
 env:
   CI: true
@@ -15,12 +19,9 @@ jobs:
       contents: write
       packages: write
       attestations: write
-      pull-requests: write
     steps:
       - name: ⬇️ Git Checkout
         uses: actions/checkout@v5
-        with:
-          fetch-depth: 0
 
       - name: ⚙️ Install pixi env
         uses: prefix-dev/setup-pixi@v0.9.1
@@ -28,20 +29,8 @@ jobs:
           pixi-version: v0.58.0
           activate-environment: true
 
-      - name: Additional Environment Initialization
-        run: task init
-
-      - name: 🧪 Validate project
-        run: task lint test
-
-      - id: release
-        name: 📃 Release Please
-        uses: googleapis/release-please-action@v4
-        with:
-          release-type: simple
-
-      - if: ${{ steps.release.outputs.release_created }}
-        run: |
-          echo 'Released Version: ${{ steps.release.outputs.version }}'
-
-        # more changes to tst release please
+      - name: 🚀 Publish release
+        run: task publish
+        env:
+          RELEASE_VERSION: ${{ inputs.release-version }}
+          RELEASE_TAG: ${{ inputs.release-tag }}

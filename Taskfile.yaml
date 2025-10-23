@@ -29,30 +29,51 @@ tasks:
       - "deno test -A ./tests/**/*.test.ts"
 
   package:
-    desc: This is triggered by cog as a pre_bump_hook to generate all the final publishable artifacts
-    deps:
-      - lint
-      - test
     requires:
       vars:
-        - COG_VERSION
-        - COG_VERSION_TAG
+        - RELEASE_VERSION
+        - RELEASE_TAG
     cmds:
       - >-
           echo '
             const config = JSON.parse(Deno.readTextFileSync("deno.json"));
-            config.version = "{{.COG_VERSION}}";
+            config.version = "{{.RELEASE_VERSION}}";
             Deno.writeTextFileSync("deno.json", JSON.stringify(config, null, 2));
           ' | deno run -A -
 
   publish:
-    desc: This is triggered by cog as a post_bump_hook to publish all the final publishable artifacts
     requires:
       vars:
-        - COG_VERSION
-        - COG_VERSION_TAG
+        - RELEASE_VERSION
+        - RELEASE_TAG
     cmds:
       - deno publish
-      - git push && git push --tags
-      - cog changelog --at {{.COG_VERSION_TAG}} > GITHUB_CHANGELOG.md
-      - gh release create {{.COG_VERSION_TAG}} -F GITHUB_CHANGELOG.md
+
+  #package:
+  #  desc: This is triggered by cog as a pre_bump_hook to generate all the final publishable artifacts
+  #  deps:
+  #    - lint
+  #    - test
+  #  requires:
+  #    vars:
+  #      - COG_VERSION
+  #      - COG_VERSION_TAG
+  #  cmds:
+  #    - >-
+  #        echo '
+  #          const config = JSON.parse(Deno.readTextFileSync("deno.json"));
+  #          config.version = "{{.COG_VERSION}}";
+  #          Deno.writeTextFileSync("deno.json", JSON.stringify(config, null, 2));
+  #        ' | deno run -A -
+
+  #publish:
+  #  desc: This is triggered by cog as a post_bump_hook to publish all the final publishable artifacts
+  #  requires:
+  #    vars:
+  #      - COG_VERSION
+  #      - COG_VERSION_TAG
+  #  cmds:
+  #    - deno publish
+  #    - git push && git push --tags
+  #    - cog changelog --at {{.COG_VERSION_TAG}} > GITHUB_CHANGELOG.md
+  #    - gh release create {{.COG_VERSION_TAG}} -F GITHUB_CHANGELOG.md

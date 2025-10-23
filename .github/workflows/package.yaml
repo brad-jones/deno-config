@@ -1,0 +1,18 @@
+on:
+  workflow_call:
+    inputs:
+      next-release-pull-request:
+        type: string
+        required: true
+
+env:
+  CI: true
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - run: echo 'next-release-pull-request - ${{ inputs.next-release-pull-request }}'
