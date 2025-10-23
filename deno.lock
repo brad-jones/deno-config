@@ -20,6 +20,7 @@
     "jsr:@std/path@1": "1.1.2",
     "jsr:@std/path@^1.1.1": "1.1.2",
     "jsr:@std/path@^1.1.2": "1.1.2",
+    "jsr:@std/semver@1.0.6": "1.0.6",
     "jsr:@zod/zod@^4.1.12": "4.1.12",
     "npm:@brad-jones/jsr-dynamic-imports@0.1.2": "0.1.2"
   },
@@ -105,6 +106,9 @@
       "dependencies": [
         "jsr:@std/internal@^1.0.10"
       ]
+    },
+    "@std/semver@1.0.6": {
+      "integrity": "b7c98ae2843547cf3f7ac37f3995889e6e4cee0a97b57b57f17f62722843303c"
     },
     "@zod/zod@4.1.12": {
       "integrity": "5876ed4c6d44673faf5120f0a461a2ada2eb6c735329d3ebaf5ba1fc08387695"

@@ -1,0 +1,42 @@
+on:
+  workflow_call:
+    inputs:
+      next-release-pull-request:
+        type: string
+        required: true
+
+env:
+  CI: true
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: ⬇️ Git Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: ${{ fromJson(inputs.next-release-pull-request).headBranchName }}
+          token: ${{ secrets.PAT }}
+
+      - name: ⚙️ Install pixi env
+        uses: prefix-dev/setup-pixi@v0.9.1
+        with:
+          pixi-version: v0.58.0
+          activate-environment: true
+
+      - name: 🏗️ Build & Package Additional Artifacts
+        run: task package
+        env:
+          RELEASE_VERSION: ${{ inputs.release-version }}
+          RELEASE_TAG: ${{ inputs.release-tag }}
+
+      - name: ⬆️ Push changes
+        run: |
+          git config --global user.name github-actions[bot]
+          git config --global user.email github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "chore: additional changes"
+          git push
